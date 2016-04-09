@@ -32,10 +32,11 @@ G_Minor  = np.array([1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0], np.int32)
 GS_Major = np.array([1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0], np.int32)
 GS_Minor = np.array([0, 1, 0, 1, 1, 0, 1, 0, 1, 0 ,1, 1], np.int32)
 
-Key_Map = {0 : 2, 1 : 8, 2 : 3, 3 : 9, 4 : 4, 5 : 5, 6 : 10, 7 : 6, 8 : 11, 9 : 0, 10 : 7, 11 : 1}
-Key_List = [(A_Major, A_Minor), (B_Major, B_Minor), (C_Major, C_Minor), (D_Major, D_Minor),
-            (E_Major, E_Minor), (F_Major, F_Minor), (G_Major, G_Minor), (AS_Major, AS_Minor),
-            (CS_Major, CS_Minor), (DS_Major, DS_Minor), (FS_Major, FS_Minor), (GS_Major, GS_Minor)]
+Key_Map  = {0 : 3, 1 : 4, 2 : 5, 3 : 6, 4 : 7, 5 : 8, 6 : 9, 7 : 10, 8 : 11, 9 : 0, 10 : 1, 11 : 2}
+Key_List = [(A_Major, A_Minor), (AS_Major, AS_Minor), (B_Major, B_Minor), (C_Major, C_Minor), (CS_Major, CS_Minor),
+            (D_Major, D_Minor), (DS_Major, DS_Minor), (E_Major, E_Minor), (F_Major, F_Minor), (FS_Major, FS_Minor),
+            (G_Major, G_Minor), (GS_Major, GS_Minor)]
+
 
 def readAllLabel():
     labels = []
