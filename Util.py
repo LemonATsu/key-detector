@@ -41,7 +41,7 @@ def readCSV(path):
     
     for file in os.listdir(path):
         if file.endswith('.csv'):
-            print(file)
+            #print(file)
             data = np.genfromtxt(path + file)
             dataset.append(data)
     return dataset
@@ -50,7 +50,7 @@ def readLabel(path):
     labels = []
     for file in os.listdir(path):
         if file.endswith('.txt'):
-            print(file)
+            #print(file)
             f = open(path + file)
             label = int(f.readlines()[0])
             print('label : %d' % (label) )
