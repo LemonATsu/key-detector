@@ -10,14 +10,16 @@ r = 1
 r_flag = False
 csv_flag = False
 def matchByGenres(predict, labels):
-    for i in range(0, 10):
+    for i in range(0, len(predict)/nClips):
         a = i * nClips
         b = (i + 1) * nClips
         o = False
         if i == 1:
             o = True
         if not r_flag:
-            print("accuracy : %f" %(gtz.matching(predict[a:b], labels[a:b], False)))
+            #print("accuracy : %f" %(gtz.matching(predict[a:b], labels[a:b], False)))
+            print("accuracy : %f, relation : %f" %(gtz.matching(predict[a:b], labels[a:b], False),(gtz.matchRelation(predict[a:b], labels[a:b], False))))
+            #print("relation : %f" %(gtz.matchRelation(predict[a:b], labels[a:b], o)))
         else:
             print("relation : %f" %(gtz.matchRelation(predict[a:b], labels[a:b], o)))
     
@@ -36,7 +38,9 @@ def method2(features, labels):
     matchByGenres(predict, labels)
 
     if not r_flag:
-        print("accuracy : %f" %(gtz.matching(predict, labels)))
+        #print("accuracy : %f" %(gtz.matching(predict, labels)))
+        print("accuracy : %f, relation : %f" %(gtz.matching(predict, labels), gtz.matchRelation(predict, labels)))
+        #print("relation : %f" %(gtz.matchRelation(predict, labels)))
     else :
         print("relation : %f" %(gtz.matchRelation(predict, labels)))
 
@@ -57,21 +61,24 @@ def method1(features, labels):
             predict.append(k_ind+12)
 
     matchByGenres(predict, labels)
-
     if not r_flag:
-        print("accuracy : %f" %(gtz.matching(predict, labels)))
+        #print("accuracy : %f" %(gtz.matching(predict, labels)))
+        print("accuracy : %f, relation : %f" %(gtz.matching(predict, labels), gtz.matchRelation(predict, labels)))
+        #print("relation : %f" %(gtz.matchRelation(predict, labels)))
     else :    
         print("relation : %f" %(gtz.matchRelation(predict, labels)))
-
 
 if __name__ == '__main__':
     labels = gtz.readAllLabel()    
     features = []    
 
     base = '../features/'
-    paths = [base + 'blues/' , base + 'classical/', base + 'country/', base + 'disco/',
-             base + 'hiphop/', base + 'jazz/'     , base + 'metal/'  , base + 'pop/',
-             base + 'reggae/', base + 'rock/']
+    #paths = [base + 'blues/' , base + 'classical/', base + 'country/', base + 'disco/',
+    #         base + 'hiphop/', base + 'jazz/'     , base + 'metal/'  , base + 'pop/',
+    #         base + 'reggae/', base + 'rock/']
+    paths = [base + 'blues/' ,
+             base + 'hiphop/', base + 'metal/'  , base + 'pop/',
+             base + 'rock/']
 
     for i in range(0, len(sys.argv)):
         if sys.argv[i] == '-r':
@@ -84,7 +91,7 @@ if __name__ == '__main__':
 
     if csv_flag:
         print('read from .csv ...')
-        for i in range(0, 10):
+        for i in range(0, len(paths)):
             dataset = u.readCSV(paths[i])
             features.extend(dataset)
     else :
@@ -92,17 +99,19 @@ if __name__ == '__main__':
 
         print('start extracting features ...')
         for c in clips:
-            features.append(feat.extractChroma(c[0]))
+            x = feat.extractChroma(c[0], r=r)
+            #features.append(feat.extractChroma(c[0]))
+            features.append(x)
 
-        for i in range(0, 10):
+        for i in range(0, len(paths)):
             dataset = features[i*nClips:(i+1)*nClips]
             u.writeCSV(dataset, paths[i])
 
     #print(features[0])
     #print(feat.logCompression(features[0], r))
     for i in range(0, len(features)):
-        features[i] = feat.logCompression(features[i], r)
         features[i] = feat.pooling(features[i])
+    
     method1(features, labels) 
     method2(features, labels)
     #print(features[0])

@@ -18,7 +18,7 @@ def readClips(path, sr=22050, n=-1):
 
     for file in os.listdir(path):
         if file.endswith('.au'):
-            print(file)
+            #print(file)
             list.append(librosa.load(path + file, sr))
             if count == -1:
                 continue
@@ -53,7 +53,7 @@ def readLabel(path):
             #print(file)
             f = open(path + file)
             label = int(f.readlines()[0])
-            print('label : %d' % (label) )
+            #print('label : %d' % (label) )
             f.close()
             labels.append(label)
 

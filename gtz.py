@@ -68,38 +68,63 @@ def findMinorKey(y):
 def matchRelation(pred, labels, output=False):
     total = len(labels)
     count = 0.0
-    
+    undef = 0
+    cc = [0, 0, 0, 0] 
     for i in range(0, total):
+        if labels[i] == -1:
+            undef = undef + 1
+            continue
         if pred[i] == labels[i]:
             count = count + 1.0
             if output:
                 print('case 1 : %d %d' %(pred[i], labels[i]))
+                cc[0] = cc[0] + 1
         elif PerfectFifth[pred[i]] == labels[i]:
             count = count + 0.5
             if output:
-                print('case 2 : %d %d' %(PerfectFifth(pred[i]), labels[i]))
+                print('case 2 : %d %d' %(PerfectFifth[pred[i]], labels[i]))
+                cc[1] = cc[1] + 1
         elif Relative[pred[i]] == labels[i]:
             count = count + 0.3
             if output:
                 print('case 3 : %d %d' %(Relative[pred[i]], labels[i]))
+                cc[2] = cc[2] + 1
         elif np.abs(pred[i] - labels[i])== 12 and labels[i] != -1:
             count = count + 0.2
             if output:
-                print('case 4 : %d %d' %(np.abs(pred[i]-labels[i]), labels[i]))
+                print('case 4 : %d %d' %(pred[i], labels[i]))
+                cc[3] = cc[3] + 1
 
-    return float(count)/float(total)
+    if output:
+        print(cc)
+
+    total = total - undef
+    if total == 0:
+        return 0
+    else :
+        return float(count)/float(total)
 
 def matching(pred, labels, output=False):
     total = len(labels)
     count = 0
+    undef = 0
 
     for i in range(0, total):
+        if labels[i] == -1:
+            undef = undef + 1
+            continue
+
         if pred[i] == labels[i]:
             count = count + 1
         else :
             if output:
                 print("mistake : %d as %d" %(labels[i], pred[i]))
-    return float(count) / float(total)
+
+    total = total - undef
+    if total == 0:
+        return 0
+    else :
+        return float(count) / float(total)
 
 def corrcoef(x, y):
     x_bar = np.mean(x)
@@ -124,22 +149,24 @@ def getKeyTup(key):
 def readAllLabel():
     labels = []
     base = '../gtzan_key/genres/'
-    paths = [base + 'blues/' , base + 'classical/', base + 'country/', base + 'disco/',
-             base + 'hiphop/', base + 'jazz/'     , base + 'metal/'  , base + 'pop/',
-             base + 'reggae/', base + 'rock/'] 
+    #paths = [base + 'blues/' , base + 'classical/', base + 'country/', base + 'disco/',
+    #         base + 'hiphop/', base + 'jazz/'     , base + 'metal/'  , base + 'pop/',
+    #         base + 'reggae/', base + 'rock/'] 
+    paths = [base + 'blues/', base + 'hiphop/', base + 'metal/', base + 'pop/', base + 'rock/']
 
     for p in paths:
         labels.extend(u.readLabel(p))
-    print len(labels)
+    #print len(labels)
     return labels
 
 
 def readAllClips(sr=22050, n=-1):
     clips = []
     base = '../genres/'
-    paths = [base + 'blues/' , base + 'classical/', base + 'country/', base + 'disco/',
-             base + 'hiphop/', base + 'jazz/'     , base + 'metal/'  , base + 'pop/',
-             base + 'reggae/', base + 'rock/'] 
+    #paths = [base + 'blues/' , base + 'classical/', base + 'country/', base + 'disco/',
+    #         base + 'hiphop/', base + 'jazz/'     , base + 'metal/'  , base + 'pop/',
+    #         base + 'reggae/', base + 'rock/'] 
+    paths = [base + 'blues/', base + 'hiphop/', base + 'metal/', base + 'pop/', base + 'rock/']
 
     for p in paths:
         clips.extend(u.readClips(p, sr, n))
